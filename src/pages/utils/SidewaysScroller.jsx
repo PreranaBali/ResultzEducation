@@ -33,33 +33,36 @@ export default function SidewaysScroller() {
       <div ref={trackRef} className="flex h-full items-stretch" style={{ width: "400vw" }}>
         {/* ===== Panels with color-linking cuts ===== */}
         <FeaturePanel
-          bg="#FF5C5C"                              // P1 base
-          tlColor="#FF5C5C"                         // TL can echo base (subtle)
-          brColor="#FF8C00"                         // P1 BR matches P2 TL
+          bg="#3D1E6D"      // P1 base – deep royal indigo (was P4)
+          tlColor="#3D1E6D" // TL echoes base
+          brColor="#D98E04" // warm amber transition
           title="Affordable Excellence"
           copy="High-quality courses priced under ₹9,999/- ensuring accessible education for all."
           src="/lottie/affordable.json"
         />
+
         <FeaturePanel
-          bg="#FF8C00"                              // P2 base
-          tlColor="#FF5C5C"                         // P2 TL matches P1 BR
-          brColor="#00C2A8"                         // P2 BR matches P3 TL
+          bg="#D98E04"      // P2 base – golden amber
+          tlColor="#3D1E6D" // ties to orange tone
+          brColor="#2A5F9E" // blends into blue
           title="Innovative Learning"
           copy="Holographic teaching technology for immersive and engaging educational experiences."
           src="/lottie/innovative.json"
         />
+
         <FeaturePanel
-          bg="#00C2A8"                              // P3 base
-          tlColor="#FF8C00"                         // P3 TL matches P2 BR
-          brColor="#1565C0"                         // P3 BR matches P4 TL
+          bg="#2A5F9E"      // P3 base – elegant sapphire blue
+          tlColor="#D98E04" // soft golden transition
+          brColor="#B85C00" // connects to next orange tone
           title="Comprehensive Coverage"
           copy="Preparation for various exams like engineering, medical, law, postgraduate, and government."
           src="/lottie/coverage.json"
         />
+
         <FeaturePanel
-          bg="#1565C0"                              // P4 base
-          tlColor="#00C2A8"                         // P4 TL matches P3 BR
-          brColor="#1565C0"                         // BR can echo base (end cap)
+          bg="#B85C00"      // P4 base – deep burnt orange (was P1)
+          tlColor="#2A5F9E" // ties back to blue tone
+          brColor="#B85C00" // echoes base tone
           title="Flexible Platforms"
           copy="Offers both offline and online learning environments tailored to diverse needs."
           src="/lottie/platforms.json"

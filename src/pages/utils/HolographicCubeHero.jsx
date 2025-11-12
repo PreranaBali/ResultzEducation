@@ -203,7 +203,7 @@ export default function HolographicCubeHero() {
             transition={{ duration: 0.8 }}
             className="text-5xl font-extrabold leading-tight md:text-6xl"
           >
-            Empower your <br /> Dreams with <br /><span className="text-amber-200">Results Education</span> 
+            Empower your <br /> Dreams with <br /><span className="text-[#ffae00]">Results Education</span> 
           </motion.h1>
 
           <div className="mt-8 flex items-center gap-4">

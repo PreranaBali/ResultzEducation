@@ -86,7 +86,7 @@ export default function ImageBurst() {
   return (
     <section
       ref={container}
-      className="relative w-full h-[1100px] overflow-hidden bg-neutral-900"
+      className="relative w-full h-[1100px] overflow-hidden bg-transparent"
     >
       {images.map((img, index) => (
         <img

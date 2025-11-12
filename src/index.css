@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.sm-scope { pointer-events: none; }
+
+.sm-scope .staggered-menu-header { pointer-events: auto; }
+
+.sm-scope [data-open] { pointer-events: auto; }
+.sm-scope [data-open] .staggered-menu-panel,
+.sm-scope [data-open] .sm-prelayers { pointer-events: auto; }
+
+.sm-scope .staggered-menu-wrapper:not([data-open]) .staggered-menu-panel {
+  visibility: hidden;
+}
