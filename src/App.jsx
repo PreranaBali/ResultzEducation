@@ -5,7 +5,6 @@ import HolographicCubeHero from "./pages/utils/HolographicCubeHero";
 
 // Pages
 import HomePage from "./pages/HomePage";
-import CoursesPage from "./pages/CoursesPage";
 import CoursePage from "./pages/CoursePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
@@ -21,8 +20,7 @@ export default function App() {
           path="/"
           element={<HomePage hero={<HolographicCubeHero />} />}
         />
-        <Route path="/courses" element={<CoursesPage />} />
-        <Route path="/courses/:coursename" element={<CoursePage />} />
+        <Route path="/courses" element={<CoursePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/Chat" element={<Chat/>}/>
