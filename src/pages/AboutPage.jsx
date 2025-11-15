@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Target, Heart, Users, Award, TrendingUp, Globe, MessageCircle, Sparkles, Check } from 'lucide-react';
-import FlowingMenu from './utils/FlowingMenu'
+import FlowingMenu from './utils/FlowingMenu';
+
 const AboutPage = () => {
   const [counters, setCounters] = useState({
     lives: 0,
@@ -13,6 +14,11 @@ const AboutPage = () => {
 
   const [question, setQuestion] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
+  const timelineRefs = useRef([]);
+  const markerRefs = useRef([]);
+  const containerRef = useRef(null);
+  const [pointerTop, setPointerTop] = useState(0);
 
   const demoItems = [
     { link: '#', text: 'Mojave', image: 'https://picsum.photos/600/400?random=1' },
@@ -20,6 +26,7 @@ const AboutPage = () => {
     { link: '#', text: 'Monterey', image: 'https://picsum.photos/600/400?random=3' },
     { link: '#', text: 'Sequoia', image: 'https://picsum.photos/600/400?random=4' }
   ];
+
   // Animated counters
   useEffect(() => {
     const animateCounter = (target, key, duration = 2000) => {
@@ -44,12 +51,41 @@ const AboutPage = () => {
   }, []);
 
   const timeline = [
-    { year: '2019', event: 'Started with 5 volunteer mentors', icon: '🌱' },
-    { year: '2020', event: 'Launched online platform during pandemic', icon: '💻' },
-    { year: '2021', event: 'Reached 10,000+ students guided', icon: '🎯' },
-    { year: '2023', event: 'Expanded to 15 countries', icon: '🌍' },
-    { year: '2024', event: 'Introduced AI-powered career matching', icon: '🤖' }
+    { year: '2019', event: 'Started with 5 volunteer mentors', icon: '🌱', image: 'https://picsum.photos/seed/mentor/400/250' },
+    { year: '2020', event: 'Launched online platform during pandemic', icon: '💻', image: 'https://picsum.photos/seed/remote/400/250' },
+    { year: '2021', event: 'Reached 10,000+ students guided', icon: '🎯', image: 'https://picsum.photos/seed/success/400/250' },
+    { year: '2023', event: 'Expanded to 15 countries', icon: '🌍', image: 'https://picsum.photos/seed/global/400/250' },
+    { year: '2024', event: 'Introduced AI-powered career matching', icon: '🤖', image: 'https://picsum.photos/seed/ai/400/250' }
   ];
+
+  // Scroll observer for snapping pointer
+  useEffect(() => {
+    const observers = timelineRefs.current.map((el, i) => {
+      if (!el) return null;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActiveIndex(i);
+          });
+        },
+        { threshold: 0.6 }
+      );
+      observer.observe(el);
+      return observer;
+    });
+    return () => observers.forEach((o) => o && o.disconnect());
+  }, []);
+
+  useEffect(() => {
+    const marker = markerRefs.current[activeIndex];
+    const container = containerRef.current;
+    if (marker && container) {
+      const markerRect = marker.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const relTop = markerRect.top - containerRect.top + markerRect.height / 2;
+      setPointerTop(relTop);
+    }
+  }, [activeIndex]);
 
   const testimonials = [
     {
@@ -82,44 +118,51 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 py-20 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 animate-pulse"></div>
-        <div className="relative mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            About Us
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-700 font-light">
-            Empowering dreams, one journey at a time
-          </p>
-          <div className="mt-8 flex justify-center space-x-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-blue-400 animate-bounce"></span>
-            <span className="inline-block h-2 w-2 rounded-full bg-purple-400 animate-bounce delay-100"></span>
-            <span className="inline-block h-2 w-2 rounded-full bg-indigo-400 animate-bounce delay-200"></span>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
+      {/* Subtle animations only */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+      `}</style>
+
+      {/* Hero Section - Professional */}
+      <section className="relative px-4 py-16 md:py-24">
+        <div className="relative mx-auto max-w-6xl">
+          <div className="text-center">
+            <h1 className="mb-4 text-4xl md:text-6xl font-bold bg-gradient-to-r from-[#f9b03e] via-[#ff7a00] to-[#ffd35c] bg-clip-text text-transparent">
+              About Us
+            </h1>
+            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+              Empowering dreams, one journey at a time
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section className="px-4 py-16 md:py-24">
+      {/* Vision & Mission - Cleaner */}
+      <section className="px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="absolute -top-6 left-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-4 shadow-lg">
-                <Target className="h-8 w-8 text-white" />
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-[#1a1a1a]/50 rounded-2xl p-8 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all">
+              <div className="bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] rounded-xl p-3 w-fit mb-4">
+                <Target className="h-6 w-6 text-[#0a0a0a]" />
               </div>
-              <h3 className="mt-6 mb-4 text-2xl font-bold text-gray-800">Our Vision</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-2xl font-semibold text-white mb-3">Our Vision</h3>
+              <p className="text-gray-400 leading-relaxed">
                 A world where everyone discovers their true potential and builds careers they love. We see a future where career decisions are confident, informed, and aligned with personal passions.
               </p>
             </div>
-            <div className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="absolute -top-6 left-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-4 shadow-lg">
-                <Heart className="h-8 w-8 text-white" />
+            <div className="bg-[#1a1a1a]/50 rounded-2xl p-8 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all">
+              <div className="bg-gradient-to-r from-[#ff7a00] to-[#ffd35c] rounded-xl p-3 w-fit mb-4">
+                <Heart className="h-6 w-6 text-[#0a0a0a]" />
               </div>
-              <h3 className="mt-6 mb-4 text-2xl font-bold text-gray-800">Our Mission</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-2xl font-semibold text-white mb-3">Our Mission</h3>
+              <p className="text-gray-400 leading-relaxed">
                 We guide students and professionals through personalized career discovery, providing expert mentorship, cutting-edge tools, and unwavering support to transform career confusion into clarity.
               </p>
             </div>
@@ -127,65 +170,87 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Our Story */}
-      <section className="px-4 py-16 md:py-24 bg-white/50">
+      {/* Enhanced Interactive Timeline Section - Professional */}
+      <section className="px-4 py-16 bg-[#0a0a0a]/50">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Our Story
+          <h2 className="text-3xl font-semibold text-center mb-4 text-white">
+            Our Journey
           </h2>
-          <div className="mb-12 max-w-3xl mx-auto">
-            <p className="text-gray-700 leading-relaxed text-lg mb-6">
-              We started with a simple belief: career guidance shouldn't be a luxury—it should be accessible to everyone.
-            </p>
-            <p className="text-gray-700 leading-relaxed text-lg">
-              Born from the challenges we faced in our own career journeys, we created a platform that combines human expertise with innovative technology. What began as weekend mentoring sessions in 2019 has grown into a thriving community helping thousands find their path.
-            </p>
-          </div>
-          
-          {/* Timeline */}
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 to-purple-400"></div>
-            {/* Timeline */}
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 to-purple-400"></div>
+          <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+            From a small team of mentors to a global platform helping thousands achieve their career goals
+          </p>
 
-              {timeline.map((item, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center mb-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                >
+          {/* Enhanced Timeline */}
+          <div className="relative" ref={containerRef}>
+            {/* Timeline line */}
+            <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-[#f9b03e]/30 to-[#ffd35c]/30"></div>
+
+            {/* Active Pointer */}
+            <div
+              className="absolute left-1/2 w-4 h-4 rounded-full border-2 border-[#0a0a0a] bg-[#f9b03e] transition-all duration-500 ease-out z-20"
+              style={{ top: `${pointerTop}px`, transform: 'translate(-50%, -50%)' }}
+            ></div>
+
+            {timeline.map((item, i) => (
+              <div
+                key={i}
+                ref={(el) => (timelineRefs.current[i] = el)}
+                className={`flex flex-col md:flex-row items-center mb-16 ${i % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
+              >
+                {/* Text */}
+                <div className="flex-1 px-6">
                   <div
-                    className={`flex-1 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}
+                    className={`bg-[#1a1a1a]/50 rounded-xl p-6 border transition-all duration-500 ${
+                      activeIndex === i 
+                        ? 'border-[#f9b03e]/40 bg-[#1a1a1a]/80' 
+                        : 'border-[#f9b03e]/10'
+                    }`}
                   >
-                    <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow inline-block">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-3xl">{item.icon}</span>
-                        <span className="font-bold text-blue-600">{item.year}</span>
-                      </div>
-                      <p className="text-gray-700">{item.event}</p>
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">{item.icon}</span>
+                      <span className="font-semibold text-[#f9b03e] text-lg">{item.year}</span>
                     </div>
+                    <p className="text-gray-300">{item.event}</p>
                   </div>
-
-                  <div className="relative flex items-center justify-center w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full z-10">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-
-                  <div className="flex-1"></div>
                 </div>
-              ))}
-            </div>
 
+                {/* Marker */}
+                <div
+                  ref={(el) => (markerRefs.current[i] = el)}
+                  className={`w-4 h-4 rounded-full border-2 border-[#0a0a0a] z-10 transition-all duration-500 ${
+                    activeIndex === i
+                      ? 'bg-[#f9b03e] scale-125'
+                      : 'bg-[#f9b03e]/40'
+                  }`}
+                ></div>
+
+                {/* Image */}
+                <div className="flex-1 px-6 mt-6 md:mt-0 flex justify-center">
+                  <img
+                    src={item.image}
+                    alt={item.year}
+                    className={`w-80 h-52 object-cover rounded-xl transition-all duration-700 ease-out border ${
+                      activeIndex === i
+                        ? 'scale-105 opacity-100 border-[#f9b03e]/30'
+                        : 'scale-95 opacity-60 border-transparent'
+                    }`}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
+
+          <p className="text-center mt-12 text-gray-500 italic">The journey continues...</p>
         </div>
       </section>
 
-      {/* Achievements */}
-      <section className="px-4 py-16 md:py-24">
+      {/* Achievements - Professional */}
+      <section className="px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-semibold text-center mb-10 text-white">
             Our Impact
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
               { value: counters.lives, suffix: '+', label: 'Lives Transformed' },
               { value: counters.companies, suffix: '+', label: 'Partner Companies' },
@@ -194,68 +259,74 @@ const AboutPage = () => {
               { value: counters.mentors, suffix: '+', label: 'Expert Mentors' },
               { value: counters.awards, suffix: '', label: 'Industry Awards' }
             ].map((stat, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <div 
+                key={index} 
+                className="bg-[#1a1a1a]/50 rounded-xl p-6 text-center border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
+              >
+                <div className="text-3xl font-semibold text-white mb-1">
                   {stat.value.toLocaleString()}{stat.suffix}
                 </div>
-                <div className="text-sm text-gray-600 mt-2">{stat.label}</div>
+                <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="px-4 py-16 md:py-24 bg-gradient-to-r from-blue-50 to-purple-50">
+      {/* Testimonials - Professional */}
+      <section className="px-4 py-16 bg-[#0a0a0a]/50">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            What People Say
+          <h2 className="text-3xl font-semibold text-center mb-10 text-white">
+            Student Success Stories
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-                <div className="flex items-center mb-6">
+              <div 
+                key={index} 
+                className="bg-[#1a1a1a]/50 rounded-2xl p-6 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
+              >
+                <div className="flex items-center mb-4">
                   <img 
                     src={testimonial.image} 
                     alt={testimonial.name}
-                    className="w-16 h-16 rounded-full mr-4 ring-4 ring-blue-100"
+                    className="w-14 h-14 rounded-full mr-3 border-2 border-[#f9b03e]/20"
                   />
                   <div>
-                    <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                    <h4 className="font-semibold text-white">{testimonial.name}</h4>
+                    <p className="text-sm text-gray-400">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-gray-700 italic leading-relaxed">"{testimonial.message}"</p>
+                <p className="text-gray-400 text-sm leading-relaxed">"{testimonial.message}"</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Career Guidance Section */}
-      <section className="px-4 py-16 md:py-24">
+      {/* Career Guidance Section - Professional */}
+      <section className="px-4 py-16">
         <div className="mx-auto max-w-4xl">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-2xl">
-            <h2 className="text-3xl font-bold mb-6 text-center">Have Questions About Your Career?</h2>
-            <p className="text-center mb-8 text-blue-100">We're here to help you navigate your journey. No question is too small or too big.</p>
+          <div className="bg-[#1a1a1a]/50 rounded-2xl p-8 border border-[#f9b03e]/10">
+            <h2 className="text-2xl font-semibold mb-2 text-center text-white">Have Questions About Your Career?</h2>
+            <p className="text-center mb-6 text-gray-400">We're here to help you navigate your journey. No question is too small or too big.</p>
             
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
+            <div className="space-y-4">
               <textarea 
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ask your question... (we reply personally)"
-                className="w-full p-4 rounded-xl bg-white/90 text-gray-800 placeholder-gray-500 resize-none h-24 focus:outline-none focus:ring-4 focus:ring-white/30"
+                className="w-full p-4 rounded-lg bg-[#0a0a0a]/50 text-white placeholder-gray-500 resize-none h-24 focus:outline-none focus:border focus:border-[#f9b03e]/30 border border-[#f9b03e]/10 transition-colors"
               />
               
-              <div className="flex flex-wrap gap-3 mt-4">
+              <div className="flex flex-wrap gap-3">
                 {['Looking for Guidance', 'Want to Collaborate', 'Need Direction'].map((option) => (
                   <button
                     key={option}
                     onClick={() => setSelectedOption(option)}
-                    className={`px-4 py-2 rounded-full transition-all ${
+                    className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${
                       selectedOption === option 
-                        ? 'bg-white text-blue-600 shadow-lg' 
-                        : 'bg-white/20 hover:bg-white/30 text-white'
+                        ? 'bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a]' 
+                        : 'bg-[#0a0a0a]/50 hover:bg-[#0a0a0a]/80 text-gray-300 border border-[#f9b03e]/10'
                     }`}
                   >
                     {selectedOption === option && <Check className="inline w-4 h-4 mr-1" />}
@@ -264,7 +335,7 @@ const AboutPage = () => {
                 ))}
               </div>
               
-              <button className="mt-6 w-full bg-white text-blue-600 font-bold py-4 rounded-xl hover:shadow-lg transition-all hover:-translate-y-0.5">
+              <button className="w-full bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 rounded-lg hover:shadow-lg transition-all">
                 Send Your Question
               </button>
             </div>
@@ -272,46 +343,44 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="px-4 py-16 md:py-24 bg-white/50">
+      {/* Why Choose Us - Professional */}
+      <section className="px-4 py-16 bg-[#0a0a0a]/50">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-semibold text-center mb-10 text-white">
             Why Choose Us?
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((feature, index) => (
-              <div key={index} className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
+              <div 
+                key={index} 
+                className="bg-[#1a1a1a]/50 rounded-xl p-6 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
+              >
+                <div className="text-3xl mb-3">{feature.icon}</div>
+                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-gray-400 text-sm">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="px-4 py-16 md:py-24">
+      {/* CTA Section - Professional */}
+      <section className="px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
-          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-3xl p-12">
-            <Sparkles className="w-12 h-12 mx-auto mb-6 text-purple-600" />
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <div className="bg-[#1a1a1a]/50 rounded-2xl p-10 border border-[#f9b03e]/10">
+            <Sparkles className="w-10 h-10 mx-auto mb-4 text-[#f9b03e]" />
+            <h2 className="text-2xl font-semibold mb-3 text-white">
               Ready to Start Your Journey?
             </h2>
-            <p className="text-xl text-gray-700 mb-8">
+            <p className="text-lg text-gray-400 mb-6">
               Your dream career is closer than you think. Let's take the first step together.
             </p>
-            <button className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-8 rounded-full hover:shadow-xl transition-all hover:-translate-y-1">
-              <span className="flex items-center">
-                Get Started Today
-                <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </span>
+            <button className="bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all inline-flex items-center">
+              Get Started Today
+              <ChevronRight className="ml-2 h-5 w-5" />
             </button>
           </div>
         </div>
-      <div style={{ height: '600px', position: 'relative' }}>
-        <FlowingMenu items={demoItems} />
-      </div>
       </section>
     </div>
   );

@@ -8,6 +8,8 @@ export default function AuroraNavbar() {
     { label: "About", ariaLabel: "Learn about us", link: "/about" },
     { label: "Services", ariaLabel: "View our services", link: "/services" },
     { label: "Contact", ariaLabel: "Get in touch", link: "/contact" },
+    { label: "Chat", ariaLabel:"communicate", link:"/Chat"},
+    { label: "Courses", ariaLabel: "Learn with us", link: "/courses" },
   ];
 
   const socialItems = [
@@ -40,7 +42,7 @@ export default function AuroraNavbar() {
 
       </div>
       {/* spacer so content doesn't hide under the fixed bar */}
-      <div style={{ height: 4 }} />
+      <div style={{ height: 5}} />
     </div>
   );
 }
