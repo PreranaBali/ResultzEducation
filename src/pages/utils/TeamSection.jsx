@@ -6,19 +6,18 @@ import director from '../../assets/team/director.png'
 // --- Config ---
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-// Changed from Orange to Neon Cyan format (R, G, B)
-const DEFAULT_GLOW_COLOR = "0, 243, 255"; 
+const DEFAULT_GLOW_COLOR = "0, 243, 255"; // Neon Cyan
 const NEON_PURPLE_RGB = "189, 0, 255";
 const MOBILE_BREAKPOINT = 768;
 
-// --- Simple data: one active + Coming soon placeholders ---
+// --- Simple data ---
 const TEAM = {
   active: {
     name: "Mr. Muthyal Ashwin Kumar",
     role: "Managing Director & Founder",
     image: director,
   },
-  placeholders: 3, // Increased placeholders to fill grid better
+  placeholders: 3, 
 };
 
 // ---------------- Particle utilities ----------------
@@ -289,7 +288,7 @@ const ParticleCard = ({
 
   return (
     <div ref={cardRef} className={`${className} relative overflow-hidden`} style={{ ...style }}>
-      {/* Tech Decoration Corners (Added from theme) */}
+      {/* Tech Decoration Corners */}
       <div className="absolute top-0 right-0 w-2 h-[2px] bg-cyan-500/50" />
       <div className="absolute top-0 right-0 w-[2px] h-2 bg-cyan-500/50" />
       <div className="absolute bottom-0 left-0 w-2 h-[2px] bg-cyan-500/50" />
@@ -438,17 +437,21 @@ const useMobile = () => {
 
 // ---------------- Presentational cards ----------------
 const PersonCard = ({ name, role, image }) => (
-  // Changed from Orange borders to Cyan/Purple borders and dark bg
   <div className="relative h-full overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-950/80 backdrop-blur-md p-0">
     <div className="aspect-square w-full overflow-hidden bg-gradient-to-br from-cyan-500/10 via-purple-500/5 to-transparent relative">
-      <img src={image} alt={name} className="h-full w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" loading="lazy" />
+      {/* UPDATED: Removed 'grayscale' and 'hover:grayscale-0' */}
+      <img 
+        src={image} 
+        alt={name} 
+        className="h-full w-full object-cover transition-all duration-500" 
+        loading="lazy" 
+      />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
       
       {/* Tech Overlay */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-600 opacity-50" />
     </div>
     <div className="relative z-10 p-5">
-        {/* Tech font classes added */}
       <h3 className="font-brand text-lg font-bold tracking-wider text-white uppercase drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{name}</h3>
       <p className="font-tech mt-1 text-sm font-medium text-cyan-400 tracking-widest uppercase">{role}</p>
     </div>
@@ -456,7 +459,6 @@ const PersonCard = ({ name, role, image }) => (
 );
 
 const ComingSoonCard = () => (
-  // Changed to Cyan dashed border
   <div className="grid h-full place-items-center gap-3 rounded-2xl border border-dashed border-cyan-500/30 bg-slate-950/50 p-10 text-center shadow-inner backdrop-blur-sm group hover:bg-cyan-950/20 transition-colors">
     <div className="relative">
         <Clock className="h-10 w-10 text-cyan-500 group-hover:text-white transition-colors" />
@@ -470,12 +472,12 @@ const ComingSoonCard = () => (
 export default function OurTeam() {
   const gridRef = useRef(null);
   const isMobile = useMobile();
-  const shouldDisable = isMobile; // prefer calm on mobile
+  const shouldDisable = isMobile; 
 
   return (
      <section className="relative min-h-screen w-full bg-[#030712] mt-20 overflow-hidden">
       
-      {/* --- FONT IMPORTS from Theme --- */}
+      {/* --- FONT IMPORTS --- */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
@@ -487,7 +489,7 @@ export default function OurTeam() {
         }
       `}</style>
 
-      {/* --- THEME BACKGROUND (Radial + Grid) --- */}
+      {/* --- THEME BACKGROUND --- */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#030712] to-[#030712]" />
       
       {/* Animated Grid Background */}
@@ -522,7 +524,7 @@ export default function OurTeam() {
 
         <BentoCardGrid gridRef={gridRef}>
           <div className="card-responsive grid gap-6 [--border-color:#22d3ee] [--background-dark:#030712] [--white:#fff]" style={{}}>
-            {/* Active member card with particles */}
+            {/* Active member card */}
             <ParticleCard
               className="card rounded-2xl border border-cyan-800 bg-[#030712] p-0 card--border-glow hover:-translate-y-1 transition-all duration-500 shadow-2xl"
               style={{ color: "var(--white)", "--glow-x": "50%", "--glow-y": "50%", "--glow-intensity": 0, "--glow-radius": "200px" }}
@@ -536,7 +538,7 @@ export default function OurTeam() {
               <PersonCard name={TEAM.active.name} role={TEAM.active.role} image={TEAM.active.image} />
             </ParticleCard>
 
-            {/* Coming soon placeholders */}
+            {/* Placeholders */}
             {Array.from({ length: TEAM.placeholders }).map((_, i) => (
               <ParticleCard
                 key={i}
@@ -556,7 +558,7 @@ export default function OurTeam() {
         </BentoCardGrid>
       </div>
 
-      {/* CSS for border glow & responsive layout - Updated to Cyan/Purple */}
+      {/* CSS for border glow & responsive layout */}
       <style>{`
         .bento-section {
           --glow-x: 50%;
