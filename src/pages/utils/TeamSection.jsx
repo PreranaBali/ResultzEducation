@@ -456,7 +456,7 @@ export default function OurTeam() {
   const shouldDisable = isMobile; // prefer calm on mobile
 
   return (
-     <section className="relative min-h-screen w-full bg-transparent">
+     <section className="relative min-h-screen w-full bg-transparent mt-20">
 
       {/* soft background glows */}
       <div className="pointer-events-none absolute inset-0">

@@ -207,7 +207,7 @@ export default function HolographicCubeHero() {
           </motion.h1>
 
           <div className="mt-8 flex items-center gap-4">
-            <a href="#courses" className="rounded-2xl w-[159px] bg-white/10 px-6 py-3 font-medium backdrop-blur hover:bg-white/20">Get Started</a>
+            <a href="/courses" className="rounded-2xl w-[159px] bg-white/10 px-6 py-3 font-medium backdrop-blur hover:bg-white/20">Get Started</a>
             <div className="text-sm text-gray-300">Affordable, innovative, and revolutionary learning solutions that bring success within reach.</div>
           </div>
 
