@@ -2,21 +2,23 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { Users, Clock } from "lucide-react";
 import director from '../../assets/team/director.png'
+
 // --- Config ---
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = "255, 123, 0"; // orange glow
+// Changed from Orange to Neon Cyan format (R, G, B)
+const DEFAULT_GLOW_COLOR = "0, 243, 255"; 
+const NEON_PURPLE_RGB = "189, 0, 255";
 const MOBILE_BREAKPOINT = 768;
 
 // --- Simple data: one active + Coming soon placeholders ---
 const TEAM = {
   active: {
-    name: "Mr. Ashwin Kumar",
+    name: "Mr. Muthyal Ashwin Kumar",
     role: "Managing Director & Founder",
-    image: director
-      ,
+    image: director,
   },
-  placeholders: 1,
+  placeholders: 3, // Increased placeholders to fill grid better
 };
 
 // ---------------- Particle utilities ----------------
@@ -287,6 +289,12 @@ const ParticleCard = ({
 
   return (
     <div ref={cardRef} className={`${className} relative overflow-hidden`} style={{ ...style }}>
+      {/* Tech Decoration Corners (Added from theme) */}
+      <div className="absolute top-0 right-0 w-2 h-[2px] bg-cyan-500/50" />
+      <div className="absolute top-0 right-0 w-[2px] h-2 bg-cyan-500/50" />
+      <div className="absolute bottom-0 left-0 w-2 h-[2px] bg-cyan-500/50" />
+      <div className="absolute bottom-0 left-0 w-[2px] h-2 bg-cyan-500/50" />
+      
       {children}
     </div>
   );
@@ -409,7 +417,7 @@ const GlobalSpotlight = ({
 // ---------------- Layout helpers ----------------
 const BentoCardGrid = ({ children, gridRef }) => (
   <div
-    className="bento-section grid gap-3 p-4 max-w-6xl w-full mx-auto select-none relative"
+    className="bento-section grid gap-5 p-4 max-w-6xl w-full mx-auto select-none relative z-30"
     style={{ fontSize: "clamp(1rem, 0.9rem + 0.25vw, 1.2rem)" }}
     ref={gridRef}
   >
@@ -430,22 +438,31 @@ const useMobile = () => {
 
 // ---------------- Presentational cards ----------------
 const PersonCard = ({ name, role, image }) => (
-  <div className="relative overflow-hidden rounded-2xl border border-orange-500/20 bg-orange-900/60 p-0">
-    <div className="aspect-square w-full overflow-hidden bg-gradient-to-br from-[#ff7b00]/10 via-[#ffae00]/5 to-transparent">
-      <img src={image} alt={name} className="h-full w-full object-cover" loading="lazy" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
+  // Changed from Orange borders to Cyan/Purple borders and dark bg
+  <div className="relative h-full overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-950/80 backdrop-blur-md p-0">
+    <div className="aspect-square w-full overflow-hidden bg-gradient-to-br from-cyan-500/10 via-purple-500/5 to-transparent relative">
+      <img src={image} alt={name} className="h-full w-full object-cover grayscale hover:grayscale-0 transition-all duration-500" loading="lazy" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
+      
+      {/* Tech Overlay */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-600 opacity-50" />
     </div>
     <div className="relative z-10 p-5">
-      <h3 className="text-lg font-semibold tracking-tight text-white">{name}</h3>
-      <p className="mt-1 text-sm font-medium text-[#ffae00]/90">{role}</p>
+        {/* Tech font classes added */}
+      <h3 className="font-brand text-lg font-bold tracking-wider text-white uppercase drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{name}</h3>
+      <p className="font-tech mt-1 text-sm font-medium text-cyan-400 tracking-widest uppercase">{role}</p>
     </div>
   </div>
 );
 
 const ComingSoonCard = () => (
-  <div className="grid h-full place-items-center gap-3 rounded-2xl border border-dashed border-orange-400/40 bg-orange-900/40 p-10 text-center shadow-inner backdrop-blur-sm">
-    <Clock className="h-10 w-10 text-[#ffae00]" />
-    <p className="text-base font-semibold tracking-wide text-[#ffae00]">Coming soon</p>
+  // Changed to Cyan dashed border
+  <div className="grid h-full place-items-center gap-3 rounded-2xl border border-dashed border-cyan-500/30 bg-slate-950/50 p-10 text-center shadow-inner backdrop-blur-sm group hover:bg-cyan-950/20 transition-colors">
+    <div className="relative">
+        <Clock className="h-10 w-10 text-cyan-500 group-hover:text-white transition-colors" />
+        <div className="absolute inset-0 bg-cyan-400 blur-xl opacity-20 animate-pulse" />
+    </div>
+    <p className="font-tech text-base font-bold tracking-widest text-cyan-500/80 uppercase">Initialize...</p>
   </div>
 );
 
@@ -456,24 +473,41 @@ export default function OurTeam() {
   const shouldDisable = isMobile; // prefer calm on mobile
 
   return (
-     <section className="relative min-h-screen w-full bg-transparent mt-20">
+     <section className="relative min-h-screen w-full bg-[#030712] mt-20 overflow-hidden">
+      
+      {/* --- FONT IMPORTS from Theme --- */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
+        .font-brand { font-family: 'Orbitron', sans-serif; }
+        @keyframes gridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+      `}</style>
 
-      {/* soft background glows */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#ff7b00]/10 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-50 w-60 rounded-full bg-[#ffae00]/10 blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <header className="mx-auto mb-10 max-w-2xl text-center">
-          <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full border border-[#ffae00]/30 bg-gradient-to-br from-[#ff7b00]/15 to-[#ffae00]/10">
-            <Users className="h-7 w-7 text-[#ffae00]" />
+      {/* --- THEME BACKGROUND (Radial + Grid) --- */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#030712] to-[#030712]" />
+      
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(6,182,212,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.1) 1px, transparent 1px)`,
+        backgroundSize: '50px 50px',
+        animation: 'gridMove 20s linear infinite'
+      }} />
+      
+      <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 z-20">
+        <header className="mx-auto mb-12 max-w-2xl text-center">
+          <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-full border border-cyan-500/50 bg-cyan-950/30 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+            <Users className="h-8 w-8 text-cyan-400" />
           </div>
-          <h1 className="bg-gradient-to-r from-white via-[#ffae00] to-[#ff7b00] bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-            Our Team
+          
+          <h1 className="font-brand bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-4xl font-black tracking-widest text-transparent sm:text-5xl drop-shadow-[0_0_15px_rgba(6,182,212,0.5)] uppercase">
+           Our Team
           </h1>
-          <p className="mt-2 text-sm text-slate-300/80">
-            Meet the leadership at the helm — more profiles are on the way.
+          <p className="font-tech mt-4 text-lg text-cyan-200/70 tracking-wider">
+          Where vision meets execution — meet the people behind ResultsEducation.
           </p>
         </header>
 
@@ -487,10 +521,10 @@ export default function OurTeam() {
         />
 
         <BentoCardGrid gridRef={gridRef}>
-          <div className="card-responsive grid gap-3 [--border-color:#392e4e] [--background-dark:#060010] [--white:#fff]" style={{}}>
+          <div className="card-responsive grid gap-6 [--border-color:#22d3ee] [--background-dark:#030712] [--white:#fff]" style={{}}>
             {/* Active member card with particles */}
             <ParticleCard
-              className="card rounded-2xl border border-slate-700/60 bg-orange-900/60 p-0 card--border-glow hover:-translate-y-0.5 transition-all duration-300"
+              className="card rounded-2xl border border-cyan-800 bg-[#030712] p-0 card--border-glow hover:-translate-y-1 transition-all duration-500 shadow-2xl"
               style={{ color: "var(--white)", "--glow-x": "50%", "--glow-y": "50%", "--glow-intensity": 0, "--glow-radius": "200px" }}
               disableAnimations={shouldDisable}
               particleCount={DEFAULT_PARTICLE_COUNT}
@@ -502,11 +536,11 @@ export default function OurTeam() {
               <PersonCard name={TEAM.active.name} role={TEAM.active.role} image={TEAM.active.image} />
             </ParticleCard>
 
-            {/* Coming soon placeholders (animated too for consistency) */}
+            {/* Coming soon placeholders */}
             {Array.from({ length: TEAM.placeholders }).map((_, i) => (
               <ParticleCard
                 key={i}
-                className="card rounded-2xl border border-dashed border-[#ffae00]/30 bg-slate-900/40 p-0 card--border-glow hover:-translate-y-0.5 transition-all duration-300"
+                className="card rounded-2xl border border-dashed border-cyan-900/50 bg-[#030712]/40 p-0 card--border-glow hover:-translate-y-1 transition-all duration-500"
                 style={{ color: "var(--white)", "--glow-x": "50%", "--glow-y": "50%", "--glow-intensity": 0, "--glow-radius": "200px" }}
                 disableAnimations={shouldDisable}
                 particleCount={DEFAULT_PARTICLE_COUNT}
@@ -522,7 +556,7 @@ export default function OurTeam() {
         </BentoCardGrid>
       </div>
 
-      {/* CSS for border glow & responsive layout (kept tiny) */}
+      {/* CSS for border glow & responsive layout - Updated to Cyan/Purple */}
       <style>{`
         .bento-section {
           --glow-x: 50%;
@@ -542,11 +576,11 @@ export default function OurTeam() {
         }
         .card--border-glow::after {
           content: '';
-          position: absolute; inset: 0; padding: 6px; border-radius: inherit; pointer-events: none; z-index: 1;
+          position: absolute; inset: 0; padding: 2px; border-radius: inherit; pointer-events: none; z-index: 1;
           background: radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-            rgba(${DEFAULT_GLOW_COLOR}, calc(var(--glow-intensity) * 0.8)) 0%,
-            rgba(${DEFAULT_GLOW_COLOR}, calc(var(--glow-intensity) * 0.4)) 30%,
-            transparent 60%);
+            rgba(${DEFAULT_GLOW_COLOR}, calc(var(--glow-intensity) * 1)) 0%,
+            rgba(${NEON_PURPLE_RGB}, calc(var(--glow-intensity) * 0.6)) 40%,
+            transparent 70%);
           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           mask-composite: exclude;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -554,7 +588,7 @@ export default function OurTeam() {
           transition: opacity .3s ease;
         }
         .card--border-glow:hover::after { opacity: 1; }
-        .particle::before { content: ''; position: absolute; inset: -2px; border-radius: 9999px; background: rgba(${DEFAULT_GLOW_COLOR}, .2); z-index: -1; }
+        .particle::before { content: ''; position: absolute; inset: -2px; border-radius: 9999px; background: rgba(${DEFAULT_GLOW_COLOR}, .4); z-index: -1; filter: blur(2px); }
       `}</style>
     </section>
   );

@@ -1,8 +1,13 @@
-// HorizontalScrollerLottie.jsx  (only showing updated bits)
+// SidewaysScroller.jsx - Professional brand-colored design
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
+
 gsap.registerPlugin(ScrollTrigger);
+
+const BRAND_GOLD = "#FFB800";
+const BRAND_BLUE = "#0066FF";
 
 export default function SidewaysScroller() {
   const sectionRef = useRef(null);
@@ -17,55 +22,65 @@ export default function SidewaysScroller() {
       xPercent: -100 * (panels.length - 1),
       ease: "none",
       scrollTrigger: {
-        trigger: sectionRef.current, pin: true, scrub: 1,
-        end: () => "+=" + getEnd(), invalidateOnRefresh: true,
+        trigger: sectionRef.current, 
+        pin: true, 
+        scrub: 1,
+        end: () => "+=" + getEnd(), 
+        invalidateOnRefresh: true,
       },
     });
 
     const onResize = () => ScrollTrigger.refresh();
     window.addEventListener("resize", onResize);
-    return () => { window.removeEventListener("resize", onResize);
-      tween.scrollTrigger?.kill(); tween.kill(); ScrollTrigger.getAll().forEach(t=>t.kill()); };
+    return () => { 
+      window.removeEventListener("resize", onResize);
+      tween.scrollTrigger?.kill(); 
+      tween.kill(); 
+      ScrollTrigger.getAll().forEach(t=>t.kill()); 
+    };
   }, []);
 
   return (
     <section ref={sectionRef} className="relative h-screen overflow-hidden text-white">
       <div ref={trackRef} className="flex h-full items-stretch" style={{ width: "400vw" }}>
-        {/* ===== Panels with color-linking cuts ===== */}
         <FeaturePanel
-          bg="#3D1E6D"      // P1 base – deep royal indigo (was P4)
-          tlColor="#3D1E6D" // TL echoes base
-          brColor="#D98E04" // warm amber transition
+          bg={`linear-gradient(135deg, #0A0F1C 0%, #1a2744 100%)`}
+          tlColor={BRAND_GOLD}
+          brColor={BRAND_BLUE}
           title="Affordable Excellence"
-          copy="High-quality courses priced under ₹9,999/- ensuring accessible education for all."
+          copy="High-quality courses priced under ₹15,000/- ensuring accessible education for all."
           src="/lottie/affordable.json"
+          accent={BRAND_GOLD}
         />
 
         <FeaturePanel
-          bg="#D98E04"      // P2 base – golden amber
-          tlColor="#3D1E6D" // ties to orange tone
-          brColor="#2A5F9E" // blends into blue
+          bg={`linear-gradient(135deg, #1a2744 0%, #0A0F1C 100%)`}
+          tlColor={BRAND_BLUE}
+          brColor={BRAND_GOLD}
           title="Innovative Learning"
           copy="Holographic teaching technology for immersive and engaging educational experiences."
           src="/lottie/innovative.json"
+          accent={BRAND_BLUE}
         />
 
         <FeaturePanel
-          bg="#2A5F9E"      // P3 base – elegant sapphire blue
-          tlColor="#D98E04" // soft golden transition
-          brColor="#B85C00" // connects to next orange tone
+          bg={`linear-gradient(135deg, #0A0F1C 0%, #1a2744 100%)`}
+          tlColor={BRAND_GOLD}
+          brColor={BRAND_BLUE}
           title="Comprehensive Coverage"
           copy="Preparation for various exams like engineering, medical, law, postgraduate, and government."
           src="/lottie/coverage.json"
+          accent={BRAND_GOLD}
         />
 
         <FeaturePanel
-          bg="#B85C00"      // P4 base – deep burnt orange (was P1)
-          tlColor="#2A5F9E" // ties back to blue tone
-          brColor="#B85C00" // echoes base tone
+          bg={`linear-gradient(135deg, #1a2744 0%, #0A0F1C 100%)`}
+          tlColor={BRAND_BLUE}
+          brColor={BRAND_GOLD}
           title="Flexible Platforms"
           copy="Offers both offline and online learning environments tailored to diverse needs."
           src="/lottie/platforms.json"
+          accent={BRAND_BLUE}
         />
       </div>
     </section>
@@ -73,8 +88,6 @@ export default function SidewaysScroller() {
 }
 
 function TwoCuts({ tlColor, brColor }) {
-  // 50% ensures the diagonal meets the panel edge at mid-height on both sides,
-  // so the line is perfectly continuous across adjacent panels.
   const tlClip = "polygon(0 0, 50% 0, 0 50%)";
   const brClip = "polygon(100% 100%, 50% 100%, 100% 50%)";
 
@@ -82,42 +95,79 @@ function TwoCuts({ tlColor, brColor }) {
     position: "absolute",
     inset: 0,
     pointerEvents: "none",
-    opacity: 1,                // tweak 0.9–1.0 if needed
-    willChange: "clip-path",   // improve subpixel consistency
+    opacity: 0.8,
+    willChange: "clip-path",
   };
 
   return (
     <>
-      <div aria-hidden style={{ ...base, backgroundColor: tlColor, clipPath: tlClip }} />
-      <div aria-hidden style={{ ...base, backgroundColor: brColor, clipPath: brClip }} />
+      <div aria-hidden style={{ ...base, background: `linear-gradient(135deg, ${tlColor}, transparent)`, clipPath: tlClip }} />
+      <div aria-hidden style={{ ...base, background: `linear-gradient(135deg, transparent, ${brColor})`, clipPath: brClip }} />
     </>
   );
 }
 
-
-/* ============== Panel ============== */
-function FeaturePanel({ bg, tlColor, brColor, title, copy, src }) {
+function FeaturePanel({ bg, tlColor, brColor, title, copy, src, accent }) {
   return (
-    <div className="hs-panel w-screen h-full relative flex items-center justify-center" style={{ backgroundColor: bg }}>
-      <TwoCuts tlColor={tlColor} brColor={brColor} size={56} />
-      <div className="relative z-10 max-w-4xl w-full grid gap-8 px-6 md:grid-cols-[360px_1fr] items-center">
-        <LottieBox src={src} />
+    <div className="hs-panel w-screen h-full relative flex items-center justify-center" 
+         style={{ background: bg }}>
+      {/* Professional background pattern */}
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `linear-gradient(${accent}20 1px, transparent 1px), linear-gradient(90deg, ${accent}20 1px, transparent 1px)`,
+        backgroundSize: '30px 30px',
+      }} />
+      
+      <TwoCuts tlColor={tlColor} brColor={brColor} />
+      
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 max-w-4xl w-full grid gap-8 px-6 md:grid-cols-[360px_1fr] items-center"
+      >
+        <LottieBox src={src} accent={accent} />
         <div>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-3">{title}</h2>
-          <p className="text-lg md:text-xl leading-relaxed opacity-95">{copy}</p>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-3">
+            <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent"
+                  style={{ filter: `drop-shadow(0 0 20px ${accent}50)` }}>
+              {title}
+            </span>
+          </h2>
+          <p className="text-lg md:text-xl leading-relaxed text-gray-200">
+            {copy}
+          </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
 
-/* ============== Lottie wrapper ============== */
-function LottieBox({ src }) {
+function LottieBox({ src, accent }) {
   return (
-    <div className="rounded-3xl border backdrop-blur p-4 md:p-6"
-      style={{ background: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.30)" }}>
+    <motion.div 
+      whileHover={{ scale: 1.05, rotate: 2 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="relative rounded-3xl p-4 md:p-6"
+      style={{ 
+        background: `linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,20,40,0.6))`,
+        border: `2px solid ${accent}`,
+        boxShadow: `0 0 40px ${accent}30, inset 0 0 30px ${accent}10`
+      }}>
+      {/* Corner decorations */}
+      <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2" style={{ borderColor: accent }} />
+      <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2" style={{ borderColor: accent }} />
+      <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2" style={{ borderColor: accent }} />
+      <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2" style={{ borderColor: accent }} />
+      
       {/* @ts-ignore */}
-      <lottie-player src={src} background="transparent" speed="1" loop autoplay style={{ width: 320, height: 320 }} />
-    </div>
+      <lottie-player 
+        src={src} 
+        background="transparent" 
+        speed="1" 
+        loop 
+        autoplay 
+        style={{ width: 320, height: 320 }} 
+      />
+    </motion.div>
   );
 }
