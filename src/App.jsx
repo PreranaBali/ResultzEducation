@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import AuroraNavbar from "./components/navbar/AuroraNavbar";
 import HolographicCubeHero from "./pages/utils/HolographicCubeHero";
+import CustomCursor from "./pages/utils/CustomCursor";
 
 
 // Pages
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#05070c] text-white">
       <AuroraNavbar />
+      <CustomCursor />
       <Routes>
         <Route
           path="/"

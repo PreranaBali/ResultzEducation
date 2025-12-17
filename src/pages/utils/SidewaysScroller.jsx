@@ -44,7 +44,7 @@ export default function SidewaysScroller() {
     <section ref={sectionRef} className="relative h-screen overflow-hidden text-white">
       <div ref={trackRef} className="flex h-full items-stretch" style={{ width: "400vw" }}>
         <FeaturePanel
-          bg={`linear-gradient(135deg, #0A0F1C 0%, #1a2744 100%)`}
+          bg={`linear-gradient(135deg, #080704ff 0%, #080808 100%)`}
           tlColor={BRAND_GOLD}
           brColor={BRAND_BLUE}
           title="Affordable Excellence"
@@ -74,7 +74,7 @@ export default function SidewaysScroller() {
         />
 
         <FeaturePanel
-          bg={`linear-gradient(135deg, #1a2744 0%, #0A0F1C 100%)`}
+          bg={`linear-gradient(135deg, #20180fff 0%, #0b0604ff 100%)`}
           tlColor={BRAND_BLUE}
           brColor={BRAND_GOLD}
           title="Flexible Platforms"
