@@ -13,7 +13,7 @@ export default function HomePage() {
       <SidewaysScroller />
 
       {/* Image burst */}
-      <ImageBurst/>
+      {/* <ImageBurst/> */}
       
       <TeamSection/>
 

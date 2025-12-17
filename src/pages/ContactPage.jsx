@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ChevronRight, 
   Mail, 
   Phone, 
   MapPin, 
   Clock, 
   Send, 
-  MessageSquare,
-  Globe,
-  Linkedin,
-  Twitter,
-  Instagram,
-  Facebook,
-  Youtube,
-  HeadphonesIcon,
-  Users,
-  Building2,
-  Calendar,
+  Linkedin, 
+  Twitter, 
+  Youtube, 
+  GraduationCap, 
+  Users, 
+  BookOpen, 
+  Award, 
   CheckCircle2,
-  GraduationCap,
-  BookOpen,
-  Award,
-  Briefcase
+  Locate,
+  ArrowRight,
+  ExternalLink
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ContactPage = () => {
+  const navigate = useNavigate();
+  
+  // Form State
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,12 +30,11 @@ const ContactPage = () => {
     subject: '',
     message: ''
   });
-
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Professional stats for LMS
+  // Animated Stats State
   const [counters, setCounters] = useState({
     students: 0,
     mentors: 0,
@@ -45,6 +42,7 @@ const ContactPage = () => {
     placement: 0
   });
 
+  // Counter Animation Logic
   useEffect(() => {
     const animateCounter = (target, key, duration = 2000) => {
       const increment = target / (duration / 16);
@@ -66,345 +64,203 @@ const ContactPage = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Simulate API Call
     setTimeout(() => {
       setIsSubmitting(false);
       setShowSuccess(true);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      });
-      
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      setSelectedCategory('');
       setTimeout(() => setShowSuccess(false), 5000);
-    }, 2000);
+    }, 1500);
   };
 
   const contactMethods = [
     {
       icon: Mail,
       title: 'Email Support',
-      info: 'support@learnpath.edu',
+      info: 'support@resultzeducation.com',
       subInfo: 'Response within 24 hours'
     },
     {
       icon: Phone,
       title: 'Phone Support',
-      info: '+1 (555) 123-4567',
-      subInfo: 'Mon-Fri 9AM to 6PM EST'
+      info: '+91 99646 66544',
+      subInfo: 'Mon-Fri 9AM to 6PM IST'
     },
     {
-      icon: MessageSquare,
-      title: 'Student Support',
-      info: 'Live chat available',
-      subInfo: 'Instant assistance'
-    },
-    {
-      icon: Calendar,
-      title: 'Book Consultation',
-      info: 'Schedule a meeting',
-      subInfo: 'Free career guidance'
+      icon: Locate,
+      title: 'Headquarters',
+      info: 'Jayanagar, Bangalore',
+      subInfo: '#14/1, 3rd Floor, 40th Cross, 8th Main'
     }
-  ];
-
-  const departments = [
-    {
-      name: 'Admissions',
-      email: 'admissions@learnpath.edu',
-      phone: '+1 (555) 123-4567',
-      hours: '9AM - 6PM EST'
-    },
-    {
-      name: 'Technical Support',
-      email: 'tech@learnpath.edu',
-      phone: '+1 (555) 123-4568',
-      hours: '24/7 Available'
-    },
-    {
-      name: 'Career Services',
-      email: 'careers@learnpath.edu',
-      phone: '+1 (555) 123-4569',
-      hours: '10AM - 5PM EST'
-    },
-    {
-      name: 'Corporate Training',
-      email: 'corporate@learnpath.edu',
-      phone: '+1 (555) 123-4570',
-      hours: '9AM - 5PM EST'
-    }
-  ];
-
-  const faqs = [
-    {
-      question: 'How do I enroll in a course?',
-      answer: 'You can enroll directly through our platform after creating an account. Browse courses, select your program, and follow the enrollment process. Our admissions team is available to assist you.'
-    },
-    {
-      question: 'What support is available for students?',
-      answer: 'We offer 24/7 technical support, dedicated mentorship, career counseling, and academic assistance. Each student gets a personal success manager.'
-    },
-    {
-      question: 'Are the certifications recognized?',
-      answer: 'Yes, our certifications are industry-recognized and accredited. We partner with leading organizations to ensure our credentials have value in the job market.'
-    },
-    {
-      question: 'Do you offer placement assistance?',
-      answer: 'Yes, we provide comprehensive placement support including resume building, interview preparation, and direct connections with our hiring partners.'
-    }
-  ];
-
-  const categories = [
-    'Course Inquiry',
-    'Technical Support',
-    'Admission Query',
-    'Career Counseling',
-    'Corporate Training',
-    'Partnership Opportunity',
-    'Other'
-  ];
-
-  const socialLinks = [
-    { icon: Linkedin, link: '#', name: 'LinkedIn' },
-    { icon: Twitter, link: '#', name: 'Twitter' },
-    { icon: Youtube, link: '#', name: 'YouTube' }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
-      {/* Subtle animations */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-300">
+      {/* Custom Scoped Styles */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes glow {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.6; }
         }
-        .animate-fadeIn {
-          animation: fadeIn 0.6s ease-out forwards;
+        .map-dark-filter {
+          filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
         }
-      `}</style>
+        .glass-card {
+          background: rgba(26, 26, 26, 0.5);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(249, 176, 62, 0.1);
+        }
+      `}} />
 
-      {/* Hero Section - More Professional */}
-      <section className="relative px-4 py-16 md:py-24">
-        <div className="relative mx-auto max-w-6xl">
-          <div className="text-center">
-            <h1 className="mb-4 text-4xl md:text-6xl font-bold bg-gradient-to-r from-[#f9b03e] via-[#ff7a00] to-[#ffd35c] bg-clip-text text-transparent">
-              Contact Us
-            </h1>
-            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
-              Get in touch with our team for course inquiries, technical support, or career guidance.
-            </p>
-          </div>
+      {/* Hero Header */}
+      <section className="relative pt-20 pb-12 px-4">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 bg-[#f9b03e]/5 blur-[120px] rounded-full"></div>
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] bg-clip-text text-transparent mb-4">
+            Connect With Us
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Have a question about our programs or career paths? Our expert consultants are ready to help you take the next step.
+          </p>
         </div>
       </section>
 
-      {/* Key Metrics - Professional Stats */}
-      <section className="px-4 pb-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: GraduationCap, value: counters.students, label: 'Active Students', suffix: '+' },
-              { icon: Users, value: counters.mentors, label: 'Expert Mentors', suffix: '+' },
-              { icon: BookOpen, value: counters.courses, label: 'Courses Available', suffix: '+' },
-              { icon: Award, value: counters.placement, label: 'Placement Rate', suffix: '%' }
-            ].map((stat, index) => (
-              <div 
-                key={index} 
-                className="bg-[#1a1a1a]/50 rounded-xl p-6 text-center border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
-              >
-                <stat.icon className="w-8 h-8 mx-auto mb-3 text-[#f9b03e]" />
-                <div className="text-2xl font-semibold text-white">
-                  {stat.value}{stat.suffix}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Contact Section */}
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-5 gap-8">
-            {/* Contact Form - Main Focus */}
-            <div className="lg:col-span-3">
-              <div className="bg-[#1a1a1a]/50 rounded-2xl p-8 border border-[#f9b03e]/10">
-                <h2 className="text-2xl font-semibold mb-2 text-white">Send Us a Message</h2>
-                <p className="text-gray-400 mb-6">Fill out the form below and we'll get back to you within 24 hours.</p>
-                
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-gray-300 text-sm font-medium mb-2">Full Name *</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#f9b03e]/30 transition-colors"
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-300 text-sm font-medium mb-2">Email Address *</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#f9b03e]/30 transition-colors"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-gray-300 text-sm font-medium mb-2">Phone Number</label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#f9b03e]/30 transition-colors"
-                        placeholder="+1 (555) 123-4567"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-300 text-sm font-medium mb-2">Inquiry Type *</label>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        required
-                        className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white focus:outline-none focus:border-[#f9b03e]/30 transition-colors"
-                      >
-                        <option value="">Select inquiry type</option>
-                        {categories.map(cat => (
-                          <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Subject *</label>
-                    <input
-                      type="text"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#f9b03e]/30 transition-colors"
-                      placeholder="Brief description of your inquiry"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Message *</label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
-                      rows="5"
-                      className="w-full px-4 py-2.5 rounded-lg bg-[#0a0a0a]/50 border border-[#f9b03e]/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#f9b03e]/30 transition-colors resize-none"
-                      placeholder="Provide details about your inquiry..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`w-full bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                  >
-                    {isSubmitting ? (
-                      <span>Processing...</span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 mr-2" />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </button>
-
-                  {showSuccess && (
-                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 flex items-center">
-                      <CheckCircle2 className="w-5 h-5 text-green-500 mr-3" />
-                      <p className="text-green-400 text-sm">Thank you for contacting us. We'll respond within 24 hours.</p>
-                    </div>
-                  )}
-                </form>
-              </div>
+      {/* Stats Bar */}
+      <section className="px-4 py-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: 'Learners', value: counters.students, icon: GraduationCap, suffix: '+' },
+            { label: 'Mentors', value: counters.mentors, icon: Users, suffix: '+' },
+            { label: 'Courses', value: counters.courses, icon: BookOpen, suffix: '+' },
+            { label: 'Success', value: counters.placement, icon: Award, suffix: '%' },
+          ].map((stat, i) => (
+            <div key={i} className="glass-card p-6 rounded-2xl text-center hover:border-[#f9b03e]/30 transition-all">
+              <stat.icon className="w-6 h-6 text-[#f9b03e] mx-auto mb-2 opacity-80" />
+              <div className="text-2xl font-bold text-white">{stat.value}{stat.suffix}</div>
+              <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">{stat.label}</div>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Contact Information - Sidebar */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Quick Contact Methods */}
-              <div className="bg-[#1a1a1a]/50 rounded-2xl p-6 border border-[#f9b03e]/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Quick Contact</h3>
-                <div className="space-y-4">
-                  {contactMethods.map((method, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="bg-[#f9b03e]/10 rounded-lg p-2">
-                        <method.icon className="w-5 h-5 text-[#f9b03e]" />
+      {/* Main Interaction Section */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-8">
+          
+          {/* Form Side */}
+          <div className="lg:col-span-3">
+            <div className="glass-card p-8 rounded-3xl">
+              <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+                <Send className="w-5 h-5 text-[#f9b03e]" />
+                Direct Inquiry
+              </h2>
+              
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs text-gray-500 ml-1">Full Name</label>
+                    <input 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full bg-[#0a0a0a] border border-white/5 rounded-xl px-4 py-3 focus:border-[#f9b03e]/40 outline-none transition-all text-white" 
+                      placeholder="Jane Doe" 
+                      required 
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-gray-500 ml-1">Email Address</label>
+                    <input 
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full bg-[#0a0a0a] border border-white/5 rounded-xl px-4 py-3 focus:border-[#f9b03e]/40 outline-none transition-all text-white" 
+                      placeholder="jane@example.com" 
+                      required 
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs text-gray-500 ml-1">Subject</label>
+                  <select 
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full bg-[#0a0a0a] border border-white/5 rounded-xl px-4 py-3 focus:border-[#f9b03e]/40 outline-none transition-all text-white"
+                    required
+                  >
+                    <option value="" disabled>Choose inquiry type</option>
+                    <option value="admission">Admissions</option>
+                    <option value="tech">Technical Support</option>
+                    <option value="career">Career Counseling</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs text-gray-500 ml-1">Message</label>
+                  <textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows="4" 
+                    className="w-full bg-[#0a0a0a] border border-white/5 rounded-xl px-4 py-3 focus:border-[#f9b03e]/40 outline-none transition-all text-white resize-none" 
+                    placeholder="Tell us how we can help..." 
+                    required 
+                  />
+                </div>
+
+                <button 
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(249,176,62,0.3)] transition-all flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? "Processing..." : <>Send Message <ArrowRight className="w-4 h-4" /></>}
+                </button>
+
+                {showSuccess && (
+                  <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center gap-3 animate-fadeIn">
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-green-200">Message sent! We'll be in touch soon.</span>
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
+
+          {/* Contact Details Side */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="glass-card p-8 rounded-3xl h-full flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-8">Reach Us Directly</h3>
+                <div className="space-y-8">
+                  {contactMethods.map((item, i) => (
+                    <div key={i} className="flex gap-4 items-start group">
+                      <div className="p-3 bg-[#f9b03e]/10 rounded-xl group-hover:bg-[#f9b03e]/20 transition-colors">
+                        <item.icon className="w-5 h-5 text-[#f9b03e]" />
                       </div>
                       <div>
-                        <h4 className="text-white font-medium">{method.title}</h4>
-                        <p className="text-gray-300 text-sm">{method.info}</p>
-                        <p className="text-gray-500 text-xs">{method.subInfo}</p>
+                        <div className="text-white font-medium mb-1">{item.title}</div>
+                        <div className="text-sm text-gray-300">{item.info}</div>
+                        <div className="text-xs text-gray-500 mt-1 italic">{item.subInfo}</div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Office Hours */}
-              <div className="bg-[#1a1a1a]/50 rounded-2xl p-6 border border-[#f9b03e]/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Office Hours</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between text-gray-300">
-                    <span>Monday - Friday</span>
-                    <span className="text-[#f9b03e]">9:00 AM - 6:00 PM EST</span>
-                  </div>
-                  <div className="flex justify-between text-gray-300">
-                    <span>Saturday</span>
-                    <span className="text-[#f9b03e]">10:00 AM - 4:00 PM EST</span>
-                  </div>
-                  <div className="flex justify-between text-gray-300">
-                    <span>Sunday</span>
-                    <span className="text-gray-500">Closed</span>
-                  </div>
-                  <div className="pt-3 mt-3 border-t border-gray-700">
-                    <p className="text-gray-400 text-xs">
-                      * 24/7 support available for enrolled students via student portal
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <div className="bg-[#1a1a1a]/50 rounded-2xl p-6 border border-[#f9b03e]/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Connect With Us</h3>
-                <div className="flex space-x-3">
-                  {socialLinks.map((social, index) => (
-                    <a
-                      key={index}
-                      href={social.link}
-                      className="bg-[#0a0a0a]/50 rounded-lg p-3 hover:bg-[#f9b03e]/10 text-gray-400 hover:text-[#f9b03e] transition-all"
-                    >
-                      <social.icon className="w-5 h-5" />
+              <div className="mt-12 pt-8 border-t border-white/5">
+                <div className="flex gap-4">
+                  {[Linkedin, Twitter, Youtube].map((Icon, i) => (
+                    <a key={i} href="#" className="p-3 bg-white/5 rounded-full hover:bg-[#f9b03e]/20 hover:text-[#f9b03e] transition-all">
+                      <Icon className="w-5 h-5" />
                     </a>
                   ))}
                 </div>
@@ -414,77 +270,70 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Department Contacts */}
-      <section className="px-4 py-16 bg-[#0a0a0a]/50">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-semibold text-center mb-10 text-white">Department Contacts</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {departments.map((dept, index) => (
-              <div 
-                key={index}
-                className="bg-[#1a1a1a]/50 rounded-xl p-5 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
-              >
-                <h3 className="text-lg font-semibold text-[#f9b03e] mb-3">{dept.name}</h3>
-                <div className="space-y-2 text-sm">
-                  <p className="text-gray-300 flex items-center">
-                    <Mail className="w-4 h-4 mr-2 text-gray-500" />
-                    {dept.email}
-                  </p>
-                  <p className="text-gray-300 flex items-center">
-                    <Phone className="w-4 h-4 mr-2 text-gray-500" />
-                    {dept.phone}
-                  </p>
-                  <p className="text-gray-400 flex items-center">
-                    <Clock className="w-4 h-4 mr-2 text-gray-500" />
-                    {dept.hours}
-                  </p>
+      {/* --- MAP SECTION --- */}
+      <section className="px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span className="text-[#f9b03e] text-xs font-bold tracking-[0.2em] uppercase">Find our Campus</span>
+              <h2 className="text-3xl font-bold text-white mt-2">Locate Resultz Education</h2>
+            </div>
+            <a 
+              href="https://www.google.com/maps/dir/?api=1&destination=12.917948,77.584417" 
+              target="_blank" 
+              rel="noreferrer"
+              className="flex items-center gap-2 text-sm text-[#f9b03e] hover:underline"
+            >
+              Get Directions <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+
+          <div className="relative rounded-[2rem] overflow-hidden border border-[#f9b03e]/20 group shadow-2xl">
+            {/* Map Iframe */}
+            <div className="h-[500px] w-full bg-[#1a1a1a]">
+              <iframe
+                title="Resultz Education Location"
+                src="https://maps.google.com/maps?q=12.917948,77.584417&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                className="w-full h-full border-0 map-dark-filter grayscale-[0.5]"
+                allowFullScreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
+
+            {/* Custom Interactive Overlay */}
+            <div className="absolute top-6 left-6 md:top-auto md:bottom-8 md:left-8">
+              <div className="bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl max-w-xs">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#f9b03e] to-[#ff7a00] rounded-xl flex items-center justify-center text-[#0a0a0a] font-bold text-xl">
+                    R
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-lg">Resultz Education</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed mt-1">
+                      #14/1, 3rd Floor, 40th Cross, Jayanagar 5th Block, Bengaluru
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] text-gray-500 uppercase font-bold tracking-widest">
+                  <span>Open: Mon - Sat</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQs */}
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl font-semibold text-center mb-10 text-white">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div 
-                key={index}
-                className="bg-[#1a1a1a]/50 rounded-xl p-6 border border-[#f9b03e]/10"
-              >
-                <h3 className="text-lg font-medium text-[#f9b03e] mb-2">
-                  {faq.question}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="bg-[#1a1a1a]/50 rounded-2xl p-10 border border-[#f9b03e]/10">
-            <GraduationCap className="w-12 h-12 mx-auto mb-4 text-[#f9b03e]" />
-            <h2 className="text-2xl font-semibold mb-3 text-white">
-              Ready to Start Your Learning Journey?
-            </h2>
-            <p className="text-gray-400 mb-6">
-              Join thousands of students who have transformed their careers with our programs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <button className="bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all">
-                Browse Courses
-              </button>
-              <button className="bg-[#0a0a0a]/50 text-white font-semibold py-3 px-6 rounded-lg border border-[#f9b03e]/20 hover:border-[#f9b03e]/40 transition-all">
-                Schedule Consultation
-              </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Footer-style CTA */}
+      <section className="px-4 py-20 bg-gradient-to-b from-transparent to-[#f9b03e]/5">
+        <div className="max-w-4xl mx-auto text-center glass-card p-12 rounded-[3rem]">
+          <h2 className="text-3xl font-bold text-white mb-4">Start Your Transformation Today</h2>
+          <p className="text-gray-400 mb-8">Join our community of over 25,000 successful students worldwide.</p>
+          <button 
+            onClick={() => navigate('/courses')}
+            className="px-8 py-4 bg-white text-[#0a0a0a] font-bold rounded-full hover:scale-105 transition-transform"
+          >
+            Explore Programs
+          </button>
         </div>
       </section>
     </div>
