@@ -1,118 +1,111 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
-const GoldCursor = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isPointer, setIsPointer] = useState(false);
-  const [isMouseDown, setIsMouseDown] = useState(false);
+const MinimalGoldCursor = () => {
+  const cursorRef = useRef(null);
+  const progressRef = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
 
-  // Use refs for smoother trailing effect on the outer layer don't trigger re-renders
-  const auraPos = useRef({ x: 0, y: 0 });
-  const auraRef = useRef(null);
+  // Radius for the circle (size 32px means center is 16px)
+  const radius = 13;
+  const circumference = 2 * Math.PI * radius;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // 1. Hide default cursor
+    gsap.set('html', { cursor: 'none' });
+
+    // 2. Optimized Movement (GSAP quickTo bypasses React rendering for 0 lag)
+    const xTo = gsap.quickTo(cursorRef.current, "x", { duration: 0.2, ease: "power3" });
+    const yTo = gsap.quickTo(cursorRef.current, "y", { duration: 0.2, ease: "power3" });
+    
+    const dotXTo = gsap.quickTo(dotRef.current, "x", { duration: 0.1, ease: "power3" });
+    const dotYTo = gsap.quickTo(dotRef.current, "y", { duration: 0.1, ease: "power3" });
+
     const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-
-      const target = e.target;
-      // Detect clickables (buttons, links, or anything with cursor: pointer)
-      const isClickable =
-        window.getComputedStyle(target).cursor === 'pointer' ||
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'A' ||
-        target.closest('a') || 
-        target.closest('button');
-        
-      setIsPointer(!!isClickable);
+      xTo(e.clientX);
+      yTo(e.clientY);
+      dotXTo(e.clientX);
+      dotYTo(e.clientY);
     };
 
-    const handleMouseDown = () => setIsMouseDown(true);
-    const handleMouseUp = () => setIsMouseDown(false);
+    // 3. Scroll Progress Logic
+    const handleScroll = () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+      // Update the SVG progress ring offset
+      const offset = circumference - (scrolled / 100) * circumference;
+      
+      gsap.to(progressRef.current, {
+        strokeDashoffset: offset,
+        duration: 0.1,
+        ease: "none"
+      });
+    };
+
+    // 4. Hover Interactions (Subtle Scale)
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      const isPointer = window.getComputedStyle(target).cursor === 'pointer' || 
+                        target.closest('button') || 
+                        target.closest('a');
+      
+      if (isPointer) {
+        gsap.to(ringRef.current, { scale: 1.4, duration: 0.3, borderColor: "#fbbf24" });
+        gsap.to(dotRef.current, { scale: 0, duration: 0.2 });
+      } else {
+        gsap.to(ringRef.current, { scale: 1, duration: 0.3, borderColor: "rgba(217, 119, 6, 0.4)" });
+        gsap.to(dotRef.current, { scale: 1, duration: 0.2 });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("mouseover", handleMouseOver);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mouseover", handleMouseOver);
+      gsap.set('html', { cursor: 'auto' });
     };
-  }, []);
-
-  // Animation loop for the trailing "Aura" layer for extra smoothness
-  useEffect(() => {
-    let animationFrameId;
-    
-    const animateAura = () => {
-      if (auraRef.current) {
-        // Calculate distance between current aura pos and actual mouse pos
-        const dx = mousePos.x - auraPos.current.x;
-        const dy = mousePos.y - auraPos.current.y;
-        
-        // Move aura towards mouse with an "ease-out" lag (0.15 speed factor)
-        auraPos.current.x += dx * 0.15;
-        auraPos.current.y += dy * 0.15;
-        
-        auraRef.current.style.left = `${auraPos.current.x}px`;
-        auraRef.current.style.top = `${auraPos.current.y}px`;
-      }
-      animationFrameId = requestAnimationFrame(animateAura);
-    };
-
-    animationFrameId = requestAnimationFrame(animateAura);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [mousePos]); // Re-run animation loop dependency on mousePos updates
-
-  const cursorClasses = "pointer-events-none fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full z-[9999]";
+  }, [circumference]);
 
   return (
-    <>
-      {/* Global override to hide default cursor */}
-      <style>{`
-        html, body, * { cursor: none !important; }
-        
-        /* Add a subtle pulse animation for hover state */
-        @keyframes goldPulse {
-          0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(2.5); }
-          50% { opacity: 0.8; transform: translate(-50%, -50%) scale(2.7); }
-        }
-        .animate-gold-pulse {
-           animation: goldPulse 2s infinite ease-in-out;
-        }
-      `}</style>
-
-      {/* Layer 3: The Outer Molten Aura (Slowest, blurred trail) */}
-      <div
-        ref={auraRef}
-        // We use refs for position here instead of state for performance on the heaviest layer
-        className={`${cursorClasses} transition-all duration-500 ease-out will-change-transform
-          ${isPointer 
-            ? 'h-16 w-16 bg-amber-600/40 blur-[20px] animate-gold-pulse' 
-            : 'h-12 w-12 bg-orange-700/30 blur-[15px]'}
-          ${isMouseDown ? 'scale-90 opacity-50' : ''}
-          `}
+    <div className="pointer-events-none fixed inset-0 z-[9999]">
+      {/* Precision Core Dot */}
+      <div 
+        ref={dotRef}
+        className="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-1 w-1 bg-yellow-200 rounded-full"
       />
-
-      {/* Layer 2: The Core (The main visual ring) */}
-      <div
-        className={`${cursorClasses} transition-all duration-200 ease-out border-[1.5px] will-change-[transform,width,height]
-          ${isPointer 
-            ? 'h-10 w-10 border-yellow-300/80 bg-amber-500/20 shadow-[0_0_15px_2px_rgba(251,191,36,0.5)]' 
-            : 'h-6 w-6 border-amber-500/60 bg-transparent'}
-           ${isMouseDown ? 'scale-75 !border-orange-500' : ''}
-        `}
-        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-      />
-
-      {/* Layer 1: The Spark (Center precision dot) */}
-      <div
-        className={`${cursorClasses} transition-all duration-75 ease-out
-          ${isPointer ? 'h-2 w-2 bg-white shadow-sm' : 'h-1.5 w-1.5 bg-yellow-200'}
-        `}
-        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-      />
-    </>
+      
+      {/* Main Container */}
+      <div ref={cursorRef} className="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2">
+        <div 
+          ref={ringRef}
+          className="relative h-8 w-8 rounded-full border border-amber-600/40 flex items-center justify-center transition-colors duration-300"
+        >
+          {/* Progress SVG Ring */}
+          <svg className="absolute h-full w-full -rotate-90 transform" viewBox="0 0 32 32">
+            <circle
+              ref={progressRef}
+              cx="16"
+              cy="16"
+              r={radius}
+              stroke="#fbbf24" // Gold
+              strokeWidth="2"
+              fill="transparent"
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference}
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default GoldCursor;
+export default MinimalGoldCursor;
