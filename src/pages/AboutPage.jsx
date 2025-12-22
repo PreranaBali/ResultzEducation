@@ -54,7 +54,7 @@ const AboutPage = () => {
   const timeline = [
   { year: '2019', event: 'Started with a small mentoring team', icon: '🌱', image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=400&h=250&q=80' },
   { year: '2020', event: 'Launched digital guidance platform during pandemic', icon: '💻', image: 'https://images.unsplash.com/photo-1591696205602-2f950c417cb9?auto=format&fit=crop&w=400&h=250&q=80' },
-  { year: '2024', event: 'Introduced AI-powered career matching', icon: '🤖', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&h=250&q=80' }
+  { year: '2025', event: 'Introduced AI-powered career matching', icon: '🤖', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&h=250&q=80' }
 ];
 
   // Scroll observer for snapping pointer
