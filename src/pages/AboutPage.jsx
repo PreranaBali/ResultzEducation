@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, Target, Heart, Users, Award, TrendingUp, Globe, MessageCircle, Sparkles, Check } from 'lucide-react';
 import FlowingMenu from './utils/FlowingMenu';
+import { useNavigate } from 'react-router-dom';
 
 const AboutPage = () => {
   const [counters, setCounters] = useState({
@@ -11,7 +12,7 @@ const AboutPage = () => {
     mentors: 0,
     awards: 0
   });
-
+  const navigate = useNavigate();
   const [question, setQuestion] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,7 +27,7 @@ const AboutPage = () => {
     { link: '#', text: 'Monterey', image: 'https://picsum.photos/600/400?random=3' },
     { link: '#', text: 'Sequoia', image: 'https://picsum.photos/600/400?random=4' }
   ];
-
+  
   // Animated counters
   useEffect(() => {
     const animateCounter = (target, key, duration = 2000) => {
@@ -273,36 +274,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Testimonials - Professional */}
-      <section className="px-4 py-16 bg-[#0a0a0a]/50">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-semibold text-center mb-10 text-white">
-            Student Success Stories
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={index} 
-                className="bg-[#1a1a1a]/50 rounded-2xl p-6 border border-[#f9b03e]/10 hover:border-[#f9b03e]/30 transition-all"
-              >
-                <div className="flex items-center mb-4">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name}
-                    className="w-14 h-14 rounded-full mr-3 border-2 border-[#f9b03e]/20"
-                  />
-                  <div>
-                    <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-400">{testimonial.role}</p>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed">"{testimonial.message}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      
       {/* Career Guidance Section - Professional */}
       <section className="px-4 py-16">
         <div className="mx-auto max-w-4xl">
@@ -375,7 +347,7 @@ const AboutPage = () => {
             <p className="text-lg text-gray-400 mb-6">
               Your dream career is closer than you think. Let's take the first step together.
             </p>
-            <button className="bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all inline-flex items-center">
+            <button  onClick={() => navigate('/courses')} className="bg-gradient-to-r from-[#f9b03e] to-[#ff7a00] text-[#0a0a0a] font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all inline-flex items-center">
               Get Started Today
               <ChevronRight className="ml-2 h-5 w-5" />
             </button>

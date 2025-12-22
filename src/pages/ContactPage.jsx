@@ -7,7 +7,8 @@ import {
   Send, 
   Linkedin, 
   Twitter, 
-  Youtube, 
+  Youtube,
+  Instagram, 
   GraduationCap, 
   Users, 
   BookOpen, 
@@ -258,8 +259,8 @@ const ContactPage = () => {
 
               <div className="mt-12 pt-8 border-t border-white/5">
                 <div className="flex gap-4">
-                  {[Linkedin, Twitter, Youtube].map((Icon, i) => (
-                    <a key={i} href="#" className="p-3 bg-white/5 rounded-full hover:bg-[#f9b03e]/20 hover:text-[#f9b03e] transition-all">
+                  {[Linkedin, Instagram, Youtube].map((Icon, i) => (
+                    <a key={i} href="https://www.instagram.com/resultseducationpvtltd/" className="p-3 bg-white/5 rounded-full hover:bg-[#f9b03e]/20 hover:text-[#f9b03e] transition-all">
                       <Icon className="w-5 h-5" />
                     </a>
                   ))}

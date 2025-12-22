@@ -12,7 +12,7 @@ export default function AuroraNavbar() {
   ];
 
   const socialItems = [
-    { label: "Twitter", link: "https://twitter.com" },
+    { label: "Instagram", link: "https://www.instagram.com/resultseducationpvtltd/" },
     { label: "GitHub", link: "https://github.com" },
     { label: "LinkedIn", link: "https://linkedin.com" },
   ];

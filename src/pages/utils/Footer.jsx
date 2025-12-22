@@ -4,7 +4,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, ArrowUpRight, Github, Linkedin, Twitter, Instagram } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 /* -------------------- THEME CONFIG -------------------- */
 const BRAND_COLOR = "#F25912"; // Resultz Education Highlight
@@ -22,16 +21,9 @@ const SocialIcon = ({ Icon, href }) => (
   </motion.a>
 );
 
-const FooterLink = ({ children, onClick }) => (
+const FooterLink = ({ children }) => (
   <li>
-    <a 
-      href="#" 
-      onClick={(e) => {
-        e.preventDefault(); // Stops the '#' from jumping the page
-        if (onClick) onClick(); // Fires your handleClick function
-      }}
-      className="group flex items-center text-stone-400 hover:text-stone-100 transition-colors duration-500 text-sm font-light tracking-wide"
-    >
+    <a href="#" className="group flex items-center text-stone-400 hover:text-stone-100 transition-colors duration-500 text-sm font-light tracking-wide">
       <span className="w-0 group-hover:w-4 transition-all duration-500 overflow-hidden text-[#D4AF37] opacity-0 group-hover:opacity-100">
         <ArrowUpRight size={14} className="mr-2" />
       </span>
@@ -42,15 +34,7 @@ const FooterLink = ({ children, onClick }) => (
 
 export default function BrandFooter() {
   const currentYear = new Date().getFullYear();
-  const navigate = useNavigate();
-  function handleClick(link){
-    navigate(link)
-    window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "instant", // Use "smooth" if you want it to glide up, but "instant" feels like a new page load
-  });
-  }
+
   return (
     <footer className="relative w-full bg-[#050505] pt-24 pb-12 overflow-hidden border-t border-white/5">
       <style>{`
@@ -80,7 +64,7 @@ export default function BrandFooter() {
             <div className="flex gap-3">
               <SocialIcon Icon={Linkedin} href="#" />
               <SocialIcon Icon={Twitter} href="#" />
-              <SocialIcon Icon={Instagram} href="#" />
+              <SocialIcon Icon={Instagram} href="https://www.instagram.com/resultseducationpvtltd/" />
               <SocialIcon Icon={Github} href="#" />
             </div>
           </div>
@@ -90,19 +74,19 @@ export default function BrandFooter() {
             <div className="space-y-6">
               <h4 className="font-tech text-xs tracking-[0.5em] uppercase text-stone-600 font-bold">Curriculum</h4>
               <ul className="space-y-4">
-                <FooterLink onClick={() => handleClick("/courses")}>Full-Stack Web</FooterLink>
-                <FooterLink onClick={() => handleClick("/courses")}>AI & Intelligence</FooterLink>
-                <FooterLink onClick={() => handleClick("/courses")}>Data Analytics</FooterLink>
-                <FooterLink onClick={() => handleClick("/courses")}>Cyber Security</FooterLink>
+                <FooterLink>Full-Stack Web</FooterLink>
+                <FooterLink>AI & Intelligence</FooterLink>
+                <FooterLink>Data Analytics</FooterLink>
+                <FooterLink>Cyber Security</FooterLink>
               </ul>
             </div>
             <div className="space-y-6">
               <h4 className="font-tech text-xs tracking-[0.5em] uppercase text-stone-600 font-bold">Institution</h4>
               <ul className="space-y-4">
-                <FooterLink onClick={() => handleClick("/courses")}>Courses</FooterLink>
-                <FooterLink onClick={() => handleClick("/about")}>About Us</FooterLink>
-                <FooterLink onClick={() => handleClick("/contact")}>Contact</FooterLink>
-                <FooterLink onClick={() => handleClick("/Chat")}>AI Chat</FooterLink>
+                <FooterLink>Admissions</FooterLink>
+                <FooterLink>Our Architects</FooterLink>
+                <FooterLink>Career Portal</FooterLink>
+                <FooterLink>Placement Registry</FooterLink>
               </ul>
             </div>
           </div>
@@ -124,7 +108,9 @@ export default function BrandFooter() {
                             </div>
                             <div className="space-y-1">
                                 <span className="block text-[10px] tracking-widest text-stone-500 uppercase font-bold">Location</span>
-                                <span className="text-sm text-stone-200 font-light">Tech Hub, Bengaluru, Karnataka</span>
+                                <span className="text-sm text-stone-200 font-light">Bangalore, India <br/>
+                                             #14/1, 3rd Floor, 40th Cross, 8th Main, 5th Block, Jayanagar, Bangalore -560041
+                                </span>
                             </div>
                         </li>
                         
@@ -134,7 +120,7 @@ export default function BrandFooter() {
                             </div>
                             <div className="space-y-1">
                                 <span className="block text-[10px] tracking-widest text-stone-500 uppercase font-bold">Direct Line</span>
-                                <span className="text-sm text-stone-200 font-light">+91 98765 43210</span>
+                                <span className="text-sm text-stone-200 font-light">+91 9964666544</span>
                             </div>
                         </li>
                         
@@ -144,7 +130,7 @@ export default function BrandFooter() {
                             </div>
                             <div className="space-y-1">
                                 <span className="block text-[10px] tracking-widest text-stone-500 uppercase font-bold">Email Registry</span>
-                                <span className="text-sm text-stone-200 font-light hover:text-[#F25912] transition-colors cursor-pointer">registry@resultseducation.com</span>
+                                <span className="text-sm text-stone-200 font-light hover:text-[#F25912] transition-colors cursor-pointer">support@resultzeducation.com</span>
                             </div>
                         </li>
                     </ul>
