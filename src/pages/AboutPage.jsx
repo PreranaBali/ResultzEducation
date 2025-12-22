@@ -52,12 +52,10 @@ const AboutPage = () => {
   }, []);
 
   const timeline = [
-    { year: '2019', event: 'Started with 5 volunteer mentors', icon: '🌱', image: 'https://picsum.photos/seed/mentor/400/250' },
-    { year: '2020', event: 'Launched online platform during pandemic', icon: '💻', image: 'https://picsum.photos/seed/remote/400/250' },
-    { year: '2021', event: 'Reached 10,000+ students guided', icon: '🎯', image: 'https://picsum.photos/seed/success/400/250' },
-    { year: '2023', event: 'Expanded to 15 countries', icon: '🌍', image: 'https://picsum.photos/seed/global/400/250' },
-    { year: '2024', event: 'Introduced AI-powered career matching', icon: '🤖', image: 'https://picsum.photos/seed/ai/400/250' }
-  ];
+  { year: '2019', event: 'Started with a small mentoring team', icon: '🌱', image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=400&h=250&q=80' },
+  { year: '2020', event: 'Launched digital guidance platform during pandemic', icon: '💻', image: 'https://images.unsplash.com/photo-1591696205602-2f950c417cb9?auto=format&fit=crop&w=400&h=250&q=80' },
+  { year: '2024', event: 'Introduced AI-powered career matching', icon: '🤖', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&h=250&q=80' }
+];
 
   // Scroll observer for snapping pointer
   useEffect(() => {
