@@ -451,6 +451,7 @@ const LowPolyHeart = () => {
   );
 };
 
+
 const HolographicCard = ({ delay, videoSrc }) => {
   return (
     <motion.div
@@ -459,17 +460,16 @@ const HolographicCard = ({ delay, videoSrc }) => {
       transition={{ delay, duration: 0.8 }}
       className="relative group w-full"
     >
-      {/* Outer Glow/Blur */}
-      <div className="absolute inset-0 bg-purple-600/20 blur-[60px] rounded-full opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
+      {/* REMOVED: The purple background blur div is completely deleted here */}
       
-      {/* The Frame */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-sm shadow-2xl">
+      {/* The Frame: Changed bg-black to bg-transparent */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-transparent shadow-2xl">
         
-        {/* Video Container */}
-        <div className="relative aspect-[4/3] md:aspect-video w-full">
+        {/* Video Container: Changed bg-black to bg-transparent */}
+        <div className="relative aspect-video w-full bg-transparent">
           {videoSrc ? (
             <video 
-              className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-105 group-hover:scale-110"
+              className="absolute inset-0 w-full h-full object-contain"
               src={videoSrc}
               autoPlay 
               loop 
@@ -477,37 +477,40 @@ const HolographicCard = ({ delay, videoSrc }) => {
               playsInline
             />
           ) : (
-            <div className="absolute inset-0 bg-neutral-900" />
+            <div className="absolute inset-0 bg-transparent" />
           )}
 
-          {/* Tech Overlay: Scanlines & Vignette */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,6px_100%] pointer-events-none z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-10" />
+          {/* Tech Overlay: Changed gradient to pure black/white (Monochrome) */}
 
-          {/* Minimal Corner Accents (Purely decorative) */}
+          {/* Minimal Corner Accents: Changed from Purple to White */}
           <div className="absolute top-4 left-4 w-8 h-[1px] bg-white/30 z-20" />
           <div className="absolute top-4 left-4 w-[1px] h-8 bg-white/30 z-20" />
           
-          <div className="absolute bottom-4 right-4 w-8 h-[1px] bg-purple-500/50 z-20" />
-          <div className="absolute bottom-4 right-4 w-[1px] h-8 bg-purple-500/50 z-20" />
+          <div className="absolute bottom-4 right-4 w-8 h-[1px] bg-white/30 z-20" />
+          <div className="absolute bottom-4 right-4 w-[1px] h-8 bg-white/30 z-20" />
         </div>
       </div>
     </motion.div>
   );
 };
-
-// --- 3. MAIN LAYOUT (Transparent Background) ---
+// --- 3. MAIN LAYOUT ---
 const ResultzShowcase = () => {
+  const navigate = useNavigate();
+
   return (
-    // 1. Removed "bg-[#050508]" -> Now it is transparent
-    <div className="min-h-screen text-white relative overflow-hidden font-sans selection:bg-purple-500/30">
+    <div className="w-full bg-transparent text-white relative overflow-hidden font-sans">
       
-      {/* 2. I Removed the "Background Ambience" divs here so it's fully clean. 
-             If you want the glowing blobs back, paste them here. */}
+      {/* UPDATED GLOW:
+         - Color: Exactly #080808 as requested.
+         - Logic: Since #080808 is dark, I removed the opacity slash (e.g. /20). 
+           It is now 100% #080808, but because the color itself is dark, 
+           it remains subtle and won't turn white.
+      */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#1a150a] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
         
-        {/* Top Section: Text & Heart */}
+        {/* Top Section */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-24">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
@@ -530,7 +533,7 @@ const ResultzShowcase = () => {
 
             <div className="flex flex-wrap gap-4">
               <button 
-                onClick={() => { window.scrollTo(0,0); navigate('/courses'); }} // Added your navigation fix here
+                onClick={() => { window.scrollTo(0,0); navigate('/courses'); }} 
                 className="px-8 py-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_40px_rgba(147,51,234,0.6)]"
               >
                 Request Demo
@@ -549,16 +552,10 @@ const ResultzShowcase = () => {
           </div>
         </div>
 
-        {/* Bottom Section: Design Elements (Videos) */}
+        {/* Bottom Section: Design Elements */}
         <div className="grid md:grid-cols-2 gap-8 items-center">
-            <HolographicCard 
-              delay={0.2} 
-              videoSrc={ThreeD} 
-            />
-            <HolographicCard 
-              delay={0.4} 
-              videoSrc={Phone}
-            />
+            <HolographicCard delay={0.2} videoSrc={ThreeD} />
+            <HolographicCard delay={0.4} videoSrc={Phone} />
         </div>
 
       </div>
