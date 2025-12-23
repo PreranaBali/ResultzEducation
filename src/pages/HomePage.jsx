@@ -1,6 +1,6 @@
 import HolographicCubeHero from "./utils/HolographicCubeHero";
 import SidewaysScroller from "./utils/SidewaysScroller";
-import ImageBurst from "./utils/ImageBurst";
+import AboutUs from "./utils/AboutUs";
 import TeamSection from "./utils/TeamSection";
 import Footer from "./utils/Footer";
 export default function HomePage() {
@@ -11,7 +11,7 @@ export default function HomePage() {
 
       {/* SIDEWAYS SCROLL */}
       <SidewaysScroller />
-
+      <AboutUs></AboutUs>
       {/* Image burst */}
       {/* <ImageBurst/> */}
       
